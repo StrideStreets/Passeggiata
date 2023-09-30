@@ -1,0 +1,174 @@
+$primary-500: #e91e63;
+$primary-600: #d81b60;
+$primary-700: #c2185b;
+
+$control-bar-background: rgba(138, 159, 149, 0.651);
+$control-bar-pane-background: rgba(224, 111, 70, 0.685);
+$logo-background: rgba(0, 0, 0, 0);
+$font-grey: rgb(35, 35, 35);
+
+.ol-mouse-position {
+	background-color: rgba(39, 39, 39, 0.384);
+	border-radius: 2px;
+	padding: 2px;
+}
+
+#map-container {
+	position: absolute;
+	top: 0%;
+	height: 100vh;
+	width: 100vw;
+	margin: 0px;
+	padding: 0px;
+	z-index: 0;
+}
+
+/*Styling Controls*/
+
+.control-pane {
+	background-color: $control-bar-pane-background;
+	padding: 10px;
+	border-radius: 4px;
+	margin: 5px 0px;
+}
+
+.locator {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	background-color: $control-bar-background;
+	z-index: 100;
+	height: 100%;
+	min-width: fit-content;
+	width: 15%;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin: 0px;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+	.title {
+		padding: 5px;
+		text-decoration: underline;
+		font-weight: bold;
+		color: $font-grey;
+	}
+}
+form {
+	display: flex;
+	width: 100%;
+
+	input {
+		width: 100%;
+	}
+}
+#addr-lookup {
+	display: flex;
+	flex-direction: column;
+
+	.text-box {
+		position: relative;
+		display: flex;
+		align-items: center;
+		input {
+			width: 100%;
+		}
+		button {
+			border: none;
+			width: auto;
+			right: 0;
+			position: absolute;
+			display: flex;
+			align-items: center;
+			background-color: rgba(255, 255, 255, 0);
+			img {
+				object-fit: contain;
+				height: auto;
+				width: auto;
+				background-color: none;
+			}
+		}
+	}
+}
+
+.button-row {
+	margin-top: 7px;
+	display: grid;
+	grid-auto-flow: column;
+	column-gap: 5px;
+
+	.full-width {
+		border: none;
+		width: 100%;
+		font-family: inherit;
+	}
+
+	.fill-to-fit {
+		border: none;
+		font-family: inherit;
+		width: auto;
+	}
+}
+
+#savedFeatureGroups {
+	margin-top: 5px;
+}
+
+.saved-group {
+	display: flex;
+	flex-direction: column;
+	padding: 5px;
+	border-radius: 4px;
+	background-color: rgba(255, 255, 255, 0.25);
+	margin: 5px 0px;
+
+	button {
+		//background-color: whitesmoke;
+		border: none;
+		//font-weight: 600;
+		//font-style: italic;
+		height: fit-content;
+	}
+}
+#layer-saver {
+	display: flex;
+	flex-direction: column;
+	justify-content: left;
+}
+
+#layer-selector {
+	padding: 5px;
+	border-radius: 4px;
+	background-color: rgba(255, 255, 255, 0.25);
+}
+
+#project-branding {
+	display: flex;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+	height: 100px;
+	width: 100%;
+	background-color: $logo-background;
+	img {
+		height: auto;
+		width: 175px;
+	}
+}
+
+ul {
+	list-style: none !important;
+	margin: 0;
+	padding: 0%;
+}
+.ol-zoom {
+}
+
+.ol-rotate {
+}
+
+.ol-attribution {
+}
+
+.ol-mouse-position {
+}
