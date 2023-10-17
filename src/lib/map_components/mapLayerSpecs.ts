@@ -11,11 +11,11 @@ import type Source from 'ol/source/Source';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import { ROOT_PATH } from '../../store';
+import { SERVER_ROOT_PATH } from '../../store';
 import { layerIdGen } from '$lib/utils';
 
 //import LayerGroup from 'ol/layer/Group.js';
-const base_tile_path = ROOT_PATH;
+const base_tile_path = SERVER_ROOT_PATH;
 
 const groups = {};
 

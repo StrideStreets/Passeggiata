@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Map } from 'ol';
 	import { fromLonLat } from 'ol/proj';
-	import { ROOT_PATH } from '../../store';
+	import { SERVER_ROOT_PATH } from '../../store';
 
 	export let map: Map | undefined = undefined;
 
@@ -40,13 +40,13 @@
 
 	const searchAddress = () => {
 		if (addressQuery) {
-			fetch(`${ROOT_PATH}/geocode/${encodeURIComponent(addressQuery)}`)
+			fetch(`${SERVER_ROOT_PATH}/geocode/${encodeURIComponent(addressQuery)}`)
 				.then((response) => response.json())
 				.then((response) => {
-					const [long, lat] = [response.longitude, response.latitude];
+					const [long, lat] = [response.lon, response.lat];
 					if (long && lat) {
-						map.getView().setCenter(fromLonLat([long, lat]));
-						map.getView().setZoom(16);
+						map!.getView().setCenter(fromLonLat([long, lat]));
+						map!.getView().setZoom(16);
 					} else {
 						console.log('Invalid or missing coordinates on response to geocode request');
 					}

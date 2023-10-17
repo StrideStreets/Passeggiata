@@ -27,6 +27,9 @@
 			})
 		});
 
+		map.getLayers().on('add', () => {
+			makeLayerSwitcher(map!, '#layer-selector');
+		});
 		makeSelect(map, (f) => {
 			if (
 				f.getGeometry()!.getType() == 'LineString' ||

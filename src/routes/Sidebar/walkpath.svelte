@@ -5,11 +5,12 @@
 	import type { Map, Feature } from 'ol';
 	import type VectorSource from 'ol/source/Vector';
 	import { layers } from '$lib/map_components/mapLayerSpecs';
-	import { ROOT_PATH } from '../../store';
+	import { SERVER_ROOT_PATH, ROUTING_LAYER_PATH } from '../../store';
+	import LayerSwitcher from 'ol-layerswitcher';
 
 	export let map: Map | undefined = undefined;
 
-	let unit: 'mins' | 'miles' | undefined;
+	let unit: 'mins' | 'miles';
 	let distance: string = '0';
 
 	//Check if selection consists of one and only one node
@@ -38,6 +39,7 @@
 
 	//Handler for calculating path from freshly selected node
 	const getPathFromNode = async () => {
+		if (!map) return null;
 		const nodeOrNull = checkSelectionForNode();
 		if (!nodeOrNull) {
 			window.alert('Please select a single node from which to calculate path.');
@@ -45,38 +47,56 @@
 		}
 		const json = new GeoJSON().writeFeature(nodeOrNull!);
 
-		let walkingPaths = await fetch(`${ROOT_PATH}/routes`, {
-			method: 'POST',
-			body: JSON.stringify({ geom: json, unit, dist: distance }),
-			headers: { 'Content-Type': 'application/json' }
-		})
+		let walkingPaths = await fetch(
+			`${SERVER_ROOT_PATH}${ROUTING_LAYER_PATH}?` +
+				new URLSearchParams({ units: unit, dist: distance }),
+			{
+				method: 'POST',
+				body: JSON.stringify(json),
+				headers: { 'Content-Type': 'application/json' }
+			}
+		)
 			.then((resp) => resp.json())
 			.then((resp) => {
-				let features: Feature[] = [];
+				let featureList: Feature[] = [];
 				console.log(resp);
 				//newWalkingPaths.concat(new GeoJSON().readFeatures(resp));
-				resp.features.forEach((el) => {
+				resp.forEach((el) => {
 					console.log(el);
 					const features = new GeoJSON().readFeatures(el);
 					console.log(features);
 					features.forEach((f) => {
 						f.setId(uuidv4());
-						features.push(f);
+						featureList.push(f);
 					});
 				});
-				return features;
+				return featureList;
+			})
+			.catch((m) => {
+				console.log(m);
+				window.alert(
+					'No valid circuit found from provided node. Please try a different (nearby) starting point.'
+				);
+				return;
 			});
 
-		const geojsonSource = layers.walkingPaths.getSource() as VectorSource;
+		const geojsonSource = layers.pathHolder.getSource() as VectorSource;
 		if (!geojsonSource.isEmpty()) {
 			geojsonSource.clear();
 		}
-
+		console.dir(walkingPaths);
 		geojsonSource.addFeatures(walkingPaths);
 
-		if (!map!.getAllLayers().some((el) => el === layers.walkingPaths)) {
-			map!.addLayer(layers.walkingPaths);
+		if (!map.getAllLayers().some((el) => el === layers.pathHolder)) {
+			console.dir(map.getAllLayers());
+			layers.pathHolder.set('selectable', true);
+			map.addLayer(layers.pathHolder);
+			console.dir(map.getAllLayers());
 		}
+
+		layers.pathHolder.setSource(geojsonSource);
+
+		console.dir(layers.pathHolder.getSource());
 	};
 </script>
 
